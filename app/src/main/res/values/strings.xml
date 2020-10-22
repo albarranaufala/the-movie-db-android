@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Screenplay</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="movies">Movies</string>
+    <string name="tv_shows">TV Shows</string>
+    <string name="movie_title">Judul Film</string>
+    <string name="movie_genre">Genre film</string>
+    <string name="synopsis">Synopsis</string>
+    <string name="genre">Genre</string>
+    <string name="director">Director</string>
+    <string name="tv_title">Tv Title</string>
+    <string name="creator">Creator</string>
+    <string name="share">Share</string>
+    <string name="productionCompany">Production Company</string>
+</resources>
