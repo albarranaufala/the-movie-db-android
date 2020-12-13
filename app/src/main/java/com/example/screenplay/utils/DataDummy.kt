@@ -1,8 +1,8 @@
 package com.example.screenplay.utils
 
 import com.example.screenplay.R
-import com.example.screenplay.data.MovieEntity
-import com.example.screenplay.data.TvShowEntity
+import com.example.screenplay.data.entity.MovieEntity
+import com.example.screenplay.data.entity.TvShowEntity
 
 object DataDummy {
     private val movieTitles = arrayOf(

@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.screenplay.R
-import com.example.screenplay.data.TvShowEntity
+import com.example.screenplay.data.entity.TvShowEntity
 import com.example.screenplay.ui.main.view.TvShowDetailActivity
 import kotlinx.android.synthetic.main.item_tvshow.view.imgPoster
 import kotlinx.android.synthetic.main.item_tvshow.view.tvRating

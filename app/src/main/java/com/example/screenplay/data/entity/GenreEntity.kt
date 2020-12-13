@@ -1,4 +1,4 @@
-package com.example.screenplay.data
+package com.example.screenplay.data.entity
 
 data class GenreEntity(
     var id: Int,

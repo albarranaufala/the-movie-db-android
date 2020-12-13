@@ -1,25 +1,20 @@
 package com.example.screenplay.ui.main.view
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.ActionBar
-import androidx.lifecycle.Observer
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.screenplay.R
-import com.example.screenplay.data.TvShowEntity
+import com.example.screenplay.data.entity.TvShowEntity
 import com.example.screenplay.ui.base.ViewModelFactory
 import com.example.screenplay.ui.main.viewmodel.TvShowDetailViewModel
-import com.example.screenplay.utils.Status
 import kotlinx.android.synthetic.main.activity_tvshow_detail.*
-import kotlinx.android.synthetic.main.activity_tvshow_detail.tvProductionCompany
-import kotlinx.android.synthetic.main.activity_tvshow_detail.tvReleaseDate
 
 class TvShowDetailActivity : AppCompatActivity() {
 
@@ -43,21 +38,11 @@ class TvShowDetailActivity : AppCompatActivity() {
 
         val factory = ViewModelFactory.getInstance()
         val viewModel = ViewModelProvider(this, factory)[TvShowDetailViewModel::class.java]
-        viewModel.getTvShowDetail(tvShowId).observe(this, Observer {
-            it?.let { resource ->
-                when (resource.status) {
-                    Status.SUCCESS -> {
-                        showProgressBar(false)
-                        resource.data?.let { tvShow -> showTvShow(tvShow) }
-                    }
-                    Status.ERROR -> {
-                        showProgressBar(false)
-                        Toast.makeText(this, it.message, Toast.LENGTH_LONG).show()
-                    }
-                    Status.LOADING -> {
-                        showProgressBar(true)
-                    }
-                }
+        showProgressBar(true)
+        viewModel.getTvShowDetail(tvShowId).observe(this, {
+            it?.let { result ->
+                showProgressBar(false)
+                showTvShow(result)
             }
         })
 
@@ -83,8 +68,8 @@ class TvShowDetailActivity : AppCompatActivity() {
             tvReleaseDate.text = tvShow.releaseDate
             tvSeason.text = "${tvShow.nSeasons} Seasons"
             tvSynopsisTvshow.text = tvShow.synopsis
-            tvGenreTvshow.text = tvShow.genres?.joinToString { it.name.toString() }
-            tvProductionCompany.text = tvShow.productionCompanies?.joinToString { it.name.toString() }
+            tvGenreTvshow.text = tvShow.genres?.joinToString { it.name.toString() }.toString().ifBlank { "-" }
+            tvProductionCompany.text = tvShow.productionCompanies?.joinToString { it.name.toString() }.toString().ifBlank { "-" }
             tvRating.text = tvShow.voteRating.toString()
         }
     }

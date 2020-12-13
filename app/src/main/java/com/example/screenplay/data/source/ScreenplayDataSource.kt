@@ -1,14 +1,15 @@
 package com.example.screenplay.data.source
 
-import com.example.screenplay.data.MovieEntity
-import com.example.screenplay.data.TvShowEntity
+import androidx.lifecycle.LiveData
+import com.example.screenplay.data.entity.MovieEntity
+import com.example.screenplay.data.entity.TvShowEntity
 
 interface ScreenplayDataSource {
-    suspend fun getMovies(): ArrayList<MovieEntity>
+    fun getMovies(): LiveData<ArrayList<MovieEntity>>
 
-    suspend fun getMovieDetail(id: Int): MovieEntity
+    fun getMovieDetail(id: Int): LiveData<MovieEntity>
 
-    suspend fun getTvShows(): ArrayList<TvShowEntity>
+    fun getTvShows(): LiveData<ArrayList<TvShowEntity>>
 
-    suspend fun getTvShowDetail(id: Int): TvShowEntity
+    fun getTvShowDetail(id: Int): LiveData<TvShowEntity>
 }

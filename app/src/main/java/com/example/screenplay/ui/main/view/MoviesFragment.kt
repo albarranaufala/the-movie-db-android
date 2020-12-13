@@ -5,14 +5,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.screenplay.R
 import com.example.screenplay.ui.main.viewmodel.MovieViewModel
 import com.example.screenplay.ui.main.adapter.MovieAdapter
-import com.example.screenplay.utils.Status
 import com.example.screenplay.ui.base.ViewModelFactory
 import kotlinx.android.synthetic.main.fragment_movies.*
 
@@ -39,25 +36,10 @@ class MoviesFragment : Fragment() {
 
         val factory = ViewModelFactory.getInstance()
         val viewModel = ViewModelProvider(this, factory)[MovieViewModel::class.java]
-        viewModel.getMovies().observe(this, Observer {
-            it?.let { resource ->
-                when (resource.status) {
-                    Status.SUCCESS -> {
-                        progressBar.visibility = View.GONE
-                        rvMovies.visibility = View.VISIBLE
-                        resource.data?.let { movies -> adapter.setMovies(movies) }
-                    }
-                    Status.ERROR -> {
-                        progressBar.visibility = View.VISIBLE
-                        rvMovies.visibility = View.GONE
-                        Toast.makeText(context, it.message, Toast.LENGTH_LONG).show()
-                    }
-                    Status.LOADING -> {
-                        progressBar.visibility = View.VISIBLE
-                        rvMovies.visibility = View.GONE
-                    }
-                }
-            }
+        viewModel.getMovies().observe(this, { movies ->
+            progressBar.visibility = View.GONE
+            rvMovies.visibility = View.VISIBLE
+            adapter.setMovies(movies)
         })
     }
 }

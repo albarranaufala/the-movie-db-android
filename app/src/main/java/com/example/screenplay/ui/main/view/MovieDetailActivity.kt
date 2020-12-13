@@ -1,22 +1,19 @@
 package com.example.screenplay.ui.main.view
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.ActionBar
-import androidx.lifecycle.Observer
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.screenplay.R
-import com.example.screenplay.data.MovieEntity
+import com.example.screenplay.data.entity.MovieEntity
 import com.example.screenplay.ui.base.ViewModelFactory
 import com.example.screenplay.ui.main.viewmodel.MovieDetailViewModel
-import com.example.screenplay.utils.Status
 import kotlinx.android.synthetic.main.activity_movie_detail.*
 
 class MovieDetailActivity : AppCompatActivity() {
@@ -40,21 +37,11 @@ class MovieDetailActivity : AppCompatActivity() {
 
         val factory = ViewModelFactory.getInstance()
         val viewModel = ViewModelProvider(this, factory)[MovieDetailViewModel::class.java]
-        viewModel.getMovieDetail(movieId).observe(this, Observer {
-            it?.let { resource ->
-                when (resource.status) {
-                    Status.SUCCESS -> {
-                        showProgressBar(false)
-                        resource.data?.let { movie -> showMovie(movie) }
-                    }
-                    Status.ERROR -> {
-                        showProgressBar(false)
-                        Toast.makeText(this, it.message, Toast.LENGTH_LONG).show()
-                    }
-                    Status.LOADING -> {
-                        showProgressBar(true)
-                    }
-                }
+        showProgressBar(true)
+        viewModel.getMovieDetail(movieId).observe(this, {
+            it?.let { result ->
+                showProgressBar(false)
+                showMovie(result)
             }
         })
 
@@ -79,8 +66,8 @@ class MovieDetailActivity : AppCompatActivity() {
             tvTitle.text = movie.title
             tvReleaseDate.text = movie.releaseDate
             tvSynopsis.text = movie.synopsis
-            tvGenre.text = movie.genres?.joinToString { it.name.toString() }
-            tvProductionCompany.text = movie.productionCompanies?.joinToString { it.name.toString() }
+            tvGenre.text = movie.genres?.joinToString { it.name.toString() }.toString().ifBlank { "-" }
+            tvProductionCompany.text = movie.productionCompanies?.joinToString { it.name.toString() }.toString().ifBlank { "-" }
             tvRating.text = movie.voteRating.toString()
         }
     }

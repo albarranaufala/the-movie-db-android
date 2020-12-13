@@ -1,24 +1,24 @@
 package com.example.screenplay.movie
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
-import com.example.screenplay.data.MovieEntity
+import com.example.screenplay.data.entity.MovieEntity
 import com.example.screenplay.data.source.ScreenplayRepository
-import com.example.screenplay.data.source.remote.RemoteDataSource
-import com.example.screenplay.data.source.remote.retrofit.NetworkConfig
 import com.example.screenplay.ui.main.viewmodel.MovieViewModel
-import com.example.screenplay.utils.Resource
-import com.nhaarman.mockitokotlin2.times
-import com.nhaarman.mockitokotlin2.verify
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import org.junit.Assert.assertEquals
+import com.example.screenplay.utils.DataDummy
+import junit.framework.Assert.assertEquals
+import junit.framework.Assert.assertNotNull
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
 import org.mockito.*
+import org.mockito.Mockito.`when`
+import org.mockito.Mockito.verify
+import org.mockito.junit.MockitoJUnitRunner
 
-
-@ExperimentalCoroutinesApi
+@RunWith(MockitoJUnitRunner::class)
 class MovieViewModelTest {
 
     private lateinit var viewModel: MovieViewModel
@@ -26,25 +26,30 @@ class MovieViewModelTest {
     @get:Rule
     var instantTaskExecutorRule = InstantTaskExecutorRule()
 
-    private val networkConfig = NetworkConfig()
-    private val remoteDataSource = RemoteDataSource.getInstance(networkConfig)
-
-    @Spy
-    @InjectMocks
-    private val screenplayRepository: ScreenplayRepository = (ScreenplayRepository.getInstance(remoteDataSource))
+    @Mock
+    private lateinit var screenplayRepository: ScreenplayRepository
 
     @Mock
-    private lateinit var observer: Observer<Resource<ArrayList<MovieEntity>>>
+    private lateinit var observer: Observer<ArrayList<MovieEntity>>
 
     @Before
     fun setUp(){
-        MockitoAnnotations.initMocks(this)
         viewModel = MovieViewModel(screenplayRepository)
     }
 
     @Test
-    fun getMovies(){
-        viewModel.getMovies().observeForever(observer)
+    fun getMovies() {
+        val dummyMovies = DataDummy.dummyMovies
+        val movies = MutableLiveData<ArrayList<MovieEntity>>()
+        movies.value = dummyMovies
 
+        `when`(screenplayRepository.getMovies()).thenReturn(movies)
+        val movieEntities = viewModel.getMovies().value
+        verify(screenplayRepository).getMovies()
+        assertNotNull(movieEntities)
+        assertEquals(10, movieEntities?.size)
+
+        viewModel.getMovies().observeForever(observer)
+        verify(observer).onChanged(dummyMovies)
     }
 }

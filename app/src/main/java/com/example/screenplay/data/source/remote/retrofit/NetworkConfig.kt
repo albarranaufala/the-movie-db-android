@@ -11,5 +11,5 @@ class NetworkConfig {
             .build()
     }
 
-    fun getService() = getRetrofit().create(APIService::class.java)
+    fun getService(): APIService = getRetrofit().create(APIService::class.java)
 }

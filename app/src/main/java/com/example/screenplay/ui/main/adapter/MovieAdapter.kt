@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.screenplay.R
-import com.example.screenplay.data.MovieEntity
+import com.example.screenplay.data.entity.MovieEntity
 import com.example.screenplay.ui.main.view.MovieDetailActivity
 import kotlinx.android.synthetic.main.item_movie.view.*
 

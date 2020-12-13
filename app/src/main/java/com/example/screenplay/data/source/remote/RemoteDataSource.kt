@@ -13,11 +13,11 @@ class RemoteDataSource private constructor(private val networkConfig: NetworkCon
             }
     }
 
-    suspend fun getMovies() = networkConfig.getService().getMovies()
+    fun getMovies() = networkConfig.getService().getMovies()
 
-    suspend fun getMovieDetail(id: Int) = networkConfig.getService().getMovieDetail(id)
+    fun getMovieDetail(id: Int) = networkConfig.getService().getMovieDetail(id)
 
-    suspend fun getTvShows() = networkConfig.getService().getTvShows()
+    fun getTvShows() = networkConfig.getService().getTvShows()
 
-    suspend fun getTvShowDetail(id: Int) = networkConfig.getService().getTvShowDetail(id)
+    fun getTvShowDetail(id: Int) = networkConfig.getService().getTvShowDetail(id)
 }
