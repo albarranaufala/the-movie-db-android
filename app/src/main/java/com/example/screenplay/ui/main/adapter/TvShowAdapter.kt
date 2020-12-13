@@ -10,29 +10,26 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.screenplay.R
 import com.example.screenplay.data.entity.TvShowEntity
 import com.example.screenplay.ui.main.view.TvShowDetailActivity
-import kotlinx.android.synthetic.main.item_tvshow.view.imgPoster
-import kotlinx.android.synthetic.main.item_tvshow.view.tvRating
-import kotlinx.android.synthetic.main.item_tvshow.view.tvSynopsis
-import kotlinx.android.synthetic.main.item_tvshow.view.tvTitle
+import kotlinx.android.synthetic.main.item_tvshow.view.*
 
-class TvShowAdapter : RecyclerView.Adapter<TvShowAdapter.TvshowViewHolder>() {
+class TvShowAdapter : RecyclerView.Adapter<TvShowAdapter.TvShowViewHolder>() {
 
-    private var listTvshows = ArrayList<TvShowEntity>()
+    private var listTvShows = ArrayList<TvShowEntity>()
 
-    fun setTvshows(items: ArrayList<TvShowEntity>) {
-        listTvshows.clear()
-        listTvshows.addAll(items)
+    fun setTvShows(items: ArrayList<TvShowEntity>) {
+        listTvShows.clear()
+        listTvShows.addAll(items)
         notifyDataSetChanged()
     }
 
-    class TvshowViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(tvshow: TvShowEntity) {
+    class TvShowViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        fun bind(tvShow: TvShowEntity) {
             with(itemView) {
-                tvTitle.text = tvshow.title
-                tvSynopsis.text = tvshow.synopsis
-                tvRating.text = tvshow.voteRating.toString()
+                tvTitle.text = tvShow.title
+                tvSynopsis.text = tvShow.synopsis
+                tvRating.text = tvShow.voteRating.toString()
                 Glide.with(context)
-                        .load(tvshow.posterPath)
+                        .load(tvShow.posterPath)
                         .apply(
                                 RequestOptions()
                                         .placeholder(R.color.colorAccent)
@@ -42,9 +39,9 @@ class TvShowAdapter : RecyclerView.Adapter<TvShowAdapter.TvshowViewHolder>() {
                         .into(imgPoster)
                 setOnClickListener {
                     val intent = Intent(context, TvShowDetailActivity::class.java).apply {
-                        putExtra(TvShowDetailActivity.EXTRA_TV_SHOW_ID, tvshow.id)
-                        putExtra(TvShowDetailActivity.EXTRA_TV_SHOW_TITLE, tvshow.title)
-                        putExtra(TvShowDetailActivity.EXTRA_TV_SHOW_POSTER, tvshow.posterPath)
+                        putExtra(TvShowDetailActivity.EXTRA_TV_SHOW_ID, tvShow.id)
+                        putExtra(TvShowDetailActivity.EXTRA_TV_SHOW_TITLE, tvShow.title)
+                        putExtra(TvShowDetailActivity.EXTRA_TV_SHOW_POSTER, tvShow.posterPath)
                     }
                     context.startActivity(intent)
                 }
@@ -52,15 +49,15 @@ class TvShowAdapter : RecyclerView.Adapter<TvShowAdapter.TvshowViewHolder>() {
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TvshowViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TvShowViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_tvshow, parent, false)
-        return TvshowViewHolder(view)
+        return TvShowViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: TvshowViewHolder, position: Int) {
-        val movie = listTvshows[position]
+    override fun onBindViewHolder(holder: TvShowViewHolder, position: Int) {
+        val movie = listTvShows[position]
         holder.bind(movie)
     }
 
-    override fun getItemCount(): Int = listTvshows.size
+    override fun getItemCount(): Int = listTvShows.size
 }

@@ -1,10 +1,10 @@
 package com.example.screenplay.ui.main.view
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.screenplay.R
@@ -38,7 +38,7 @@ class TvShowsFragment : Fragment() {
         viewModel.getTvShows().observe(this, { results ->
             progressBar.visibility = View.GONE
             rvTvshows.visibility = View.VISIBLE
-            adapter.setTvshows(results)
+            adapter.setTvShows(results)
         })
     }
 }

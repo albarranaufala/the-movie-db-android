@@ -8,6 +8,7 @@ import com.example.screenplay.data.source.remote.retrofit.response.MovieDetailRe
 import com.example.screenplay.data.source.remote.retrofit.response.MovieListResponse
 import com.example.screenplay.data.source.remote.retrofit.response.TvShowDetailResponse
 import com.example.screenplay.data.source.remote.retrofit.response.TvShowListResponse
+import com.example.screenplay.utils.EspressoIdlingResource
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -23,6 +24,7 @@ class ScreenplayRepository private constructor(private val remoteDataSource: Rem
     }
 
     override fun getMovies(): LiveData<ArrayList<MovieEntity>> {
+        EspressoIdlingResource.increment()
         val movieResults = MutableLiveData<ArrayList<MovieEntity>>()
         remoteDataSource.getMovies().enqueue(object: Callback<MovieListResponse>{
             override fun onResponse(call: Call<MovieListResponse>, response: Response<MovieListResponse>) {
@@ -41,6 +43,7 @@ class ScreenplayRepository private constructor(private val remoteDataSource: Rem
                                 movieList.add(movie)
                             }
                         }
+                        EspressoIdlingResource.decrement()
                         movieResults.postValue(movieList)
                     }
                 }
@@ -48,6 +51,7 @@ class ScreenplayRepository private constructor(private val remoteDataSource: Rem
 
             override fun onFailure(call: Call<MovieListResponse>, t: Throwable) {
                 movieResults.postValue(null)
+                EspressoIdlingResource.decrement()
             }
         })
         return movieResults
